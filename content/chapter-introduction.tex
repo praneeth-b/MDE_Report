@@ -1,0 +1,75 @@
+% !TEX root = ../my-thesis.tex
+%
+\chapter{Introduction}
+\label{sec:intro}
+
+\cleanchapterquote{You can’t do better design with a computer, but you can speed up your work enormously.}{Wim Crouwel}{(Graphic designer and typographer)}
+
+
+
+\section{Postcards: My Address}
+\label{sec:intro:address}
+
+\textbf{Praneeth Balakrishna} \\
+Vogeliusweg 23D.2.5 \\
+33100 Paderborn \\
+Germany
+
+
+\section{Motivation}
+\label{sec:intro:motivation}
+
+Depth estimation is a well studied problem in computer vision. It is an important step in the 3-D reconstruction of scenes and is crucial in fields like robot-vision and self driving cars. Monocular depth estimation aims to solve this problem using images obtained from a single camera.
+Humans can easily infer depth from single images with sufficient samples learnt(how near and far objects appear) over the lifetime. In contrast, for a computer vision system, monocular depth estimation is an ill posed problem due to its inherent ambiguity in mapping RGB pixel values to depth.
+\\\\
+Typically, this is solved as a regression problem where the learning model learns to predict the metric depth map of the given RGB image. Such a depth map contains the metric depth of every pixel/segment within the image. Deep learning models, especially Convolutional Neural Networks(CNN) have achieved good success in learning such models, as demonstrated in \cite{eigen2014depth}. Such a technique requires training data which also contains a metric depth map which is obtained using much complex techniques such as methods utilizing sensors like Lidar and Kinect.\\
+However, not all applications require exact metric depth prediction. Instead, prediction of an ordinal relation is sufficient in such cases, \textit{e.g.}, to detect occlusion boundaries in the image for an augmented reality application.  This also provides an opportunity for models to learn from pseudo depth data \cite{zoran2015learning,chen2016single}. Pseudo depth maps only provide relative depth information such as object A 'is closer' than object B or object B 'is closer' than object C, but does not quantify the distance between them. Furthermore, such an ordinal classification problem can be solved as a ranking problem \cite{liu2011learning}. \cite{xian2018monocular,xian2020structure} employ learning-to-rank methods on pairwise training samples, minimizing pairwise ranking loss in order to predict a dense pseudo-depth map. However, pairwise prediction leads to loss of information, particularly information about the transitivity of the order relation\cite{Lienen_2021_CVPR}. In order to overcome this issue, list-wise ranking was proposed \cite{cao2007learning}, where an arbitrary number of samples are chosen as a list and the model is trained to rank the samples in the order of their relative depth \cite{Lienen_2021_CVPR}. This is achieved by minimizing a permutation loss function which computes the inconsistency between the output ranking predicted by the model and the ground truth permutation. Such a model aims to solve a much complex ranking problem wherein the transitivity of all elements in the list of an arbitrary length is to be considered.
+In the monocular depth estimation methods described in \cite{xian2018monocular,chen2016single,Lienen_2021_CVPR}, sampling methods utilized for training the model is predominantly random sampling of pairs or lists. Random sampling leads to two potential issues. Firstly, it leads to imbalanced ordinal relations\cite{xian2018monocular} and secondly, it misses out the fact that certain pixels in the image provide better depth cues than others. 
+\\\\
+In an attempt to further improve the performance of list-wise learning-to-rank method for monocular depth estimation \cite{Lienen_2021_CVPR}, two potential methods are explored in this thesis. 
+Firstly, an informativeness score is computed over the training data by making use of the visual depth cues in the images and the learning model is trained on highly informative samples that provide better cues for depth estimation. 
+Secondly, a query strategy on a partially trained model is developed such that, the model queries samples from the unlabeled training data about which it is most uncertain with respect to relative depth prediction. Thereby, choosing to learn from training samples that it is most uncertain of. Such a technique lies in the realm of active learning\cite{settles2009active} where the current model hypothesis is utilized within the query selection process for labelling samples for further training.
+
+
+
+
+\section{Problem Statement}
+
+The fundamental goal of the thesis is to solve the monocular depth estimation (of pixels) problem as a learning-to-rank task. However, the challenge is to achieve this by weakly supervised training data where the learning model does not learn from accurate metric depth, but instead learn from relative-depth training data. The methods described in Sec Todo !!!!! achieve laudable results in solving such a problem. The focus here is to improve those methods in order to achieve better results.
+
+\subsection{Improved sampling strategy}
+In methods \cite{xian2018monocular, chen2016single, Lienen_2021_CVPR}, the learning models are trained with samples(pairs or lists) that are randomly sampled from the training images. There are certain aspects of the image, like depth-edges, texture, occlusion, etc. that provide depth cues and random sampling misses out on entirely utilizing such information and hence, the model learns mostly from less informative samples.
+Therefore, the aim is to propose an information measurement score on the training samples and develop a superior sampling strategy such that informative samples are more likely picked during training.
+
+\subsection{Active learning}
+Active learning is a case of machine learning where the learning algorithm chooses the data on which it learns \cite{settles2009active}. The model poses queries on unlabeled data to an oracle(eg. a human annotator), for the label. By this method, the learning model can learn effectively on fewer number of training samples.\\
+Therefore, the second aim of the thesis is to develop an active learning algorithm to query uncertain samples for labeling, during prediction. Additionally, an oracle which can label the queried samples is to be formulated.   
+
+Finally, an analysis of the performance improvement with both the above techniques is to be conducted in comparison to the earlier methods.  
+
+
+
+\section{Results : TODO}
+\label{sec:intro:results}
+
+%\Blindtext[1][2]
+
+\section{Thesis Structure}
+\label{sec:intro:structure}
+\textbf{Chapter \ref{sec:fundamentals}} \\[0.2em]
+Chapter \ref{sec:fundamentals}  gives an overview of most of the necessary topics and various terminologies that are needed to understand the chapters that follow. It begins with describing the fundamental concepts of computer vision and also traces the various methods in which features can be extracted from images. This is followed by the topic Deep Learning which has resulted in a revolution in the field of artificial intelligence. Popular deep learning techniques pertaining to monocular depth estimation are discussed here. A brief description of the programming tools and frameworks needed to realize such models is also provided.
+
+\textbf{Chapter \ref{sec:related}} \\[0.2em]
+
+
+\textbf{Chapter \ref{sec:system}} \\[0.2em]
+
+
+\textbf{Chapter \ref{sec:concepts}} \\[0.2em]
+
+
+\textbf{Chapter \ref{sec:concepts}} \\[0.2em]
+
+
+\textbf{Chapter \ref{sec:conclusion}} \\[0.2em]
+

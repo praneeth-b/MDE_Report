@@ -1,0 +1,175 @@
+
+
+
+
+\chapter{Fundamentals}
+\label{sec:fundamentals}
+
+\cleanchapterquote{A picture is worth a thousand words. An interface is worth a thousand pictures.}{Ben Shneiderman}{(Professor for Computer Science)}
+
+
+\section{Computer Vision}
+\label{sec:fundamentals:sec1}
+
+Computer vision is a field of artificial intelligence which aims to develop techniques that aid machines/computers to see and make meaningful inferences out of the content present in digital images.
+Computer vision is the core idea in various applications namely Autonomous driving: for lane and pedestrian detection, in Healthcare: for medical imaging and cancer/tumour detection, in Manufacturing: for defect inspection, OCR/bar-code reading and preventive maintenance and in Agriculture: for crop yield monitoring, livestock health monitoring and crop disease detection.
+
+Although the applications of computer vision is manifold, there exists a sequence of distinct steps to process and analyze images. Such a process can be termed as the vision pipeline.\cite{WEB:manning}. The following figure \ref{fig:fundamentals:example1} illustrates a typical vision pipeline followed in computer vision applications.
+
+% \begin{figure}[!h]
+% 	\centering
+% 	\input{imgs/cvp.pdf}
+% \end{figure}
+\begin{figure}[h]
+	\includegraphics[width=\textwidth]{content/imgs/cv-pipeline.drawio.pdf}
+	\caption{Computer vision pipeline}
+	\label{fig:fundamentals:example1}
+\end{figure}
+
+\subsection{Input Data}
+Computer vision applications typically deal with image or video data. A simple grayscale image can be represented as a 2-Dimensional function $F(x,y)$ over $x$ and $y$. where $F(x,y)$ is the intensity of the pixel at position $(x,y)$\\
+In colour images, a third dimension is added which represents the intensities of different colour channels in the image. A typical color model is the RGB color model which stands for "Red, Green and Blue". A colour image in RGB format would be:
+\begin{align*}
+    \text{RGB image} = F(x,y) = [Red(x,y), Green(x,y), Blue(x,y)]
+\end{align*}
+which consists of three channels $Red(x,y), Green(x,y), Blue(x,y)$ each of dimensions $m$x$n$. Each channel represents the intensity map of the particular colour at every position $(x,y)$ in the image.\\
+Each Color (that is a triplet of values (R, G, B)) has a depth of 24 bits (3 image planes times the number of bits per plane).
+This results in $(2)^{24}$ different colour\cite{gonzalez2002digital}.
+
+
+\subsection{Image Preprocessing}
+The images acquired usually come from various sources and are often not clean. There could be a varied amount of noise, illumination differences and different contrasts. In order to feed them to a machine learning application, they need to be standardized and cleaned up \cite{WEB:manning}. It is nearly impossible to clean up each sample individually. Therefore a general procedure is followed to achieve this task.
+
+%\begin{enumerate*}[label=\arabic*)]
+%	\item Convert images to grayscale to reduce complexity: Certain applications like edge detection and depth estimation do not require information from all the three channels(in the case of RGB) in order to perform. In such cases it is useful to remove unwanted information from the image to reduce space and computational complexity \cite{WEB:manning}
+%	
+%	\item sdf 
+%	
+%\end{enumerate*}
+
+\begin{enumerate}
+	\item \textbf{Convert images to grayscale to reduce complexity:} Certain applications like edge detection and depth estimation do not require information from all the three channels(in the case of RGB) in order to perform. In such cases it is useful to remove unwanted information from the image to reduce space and computational complexity \cite{WEB:manning}
+	
+	\item \textbf{Standardize images:} Algorithms involving learning models have a fixed input shape requirement. In order to satisfy this requirement, the images from various sources must be scaled and reshaped to match the input dimensions of the learning models \cite{WEB:manning} .
+	
+	\item \textbf{Data augmentation:} Data augmentation is a method to increase the amount of training samples by making copies of the existing samples but however with slight changes in either orientation, translation, color intensity, etc. This exposes the learning model to a wider range of variations in the images and hence acts as a regularizer \cite{WEB:manning}.
+	
+\end{enumerate}
+
+
+\subsection{Feature Extraction}
+Machine learning models perform only as good as the features that they are trained on. Therefore, identifying and quantifying good quality features is crucial. Feature extraction consists of two steps: Feature detection and feature description \cite{gonzalez2002digital}. Feature detection refers to finding useful features in the image where as feature description assigns quantitative attributes to to the detected features \cite{gonzalez2002digital}.
+Traditional computer vision problems relied heavily on manual feature engineering and selection. Such a task relied on the domain knowledge of the respective domain experts. The extracted features are then used to train learning models to realize a computer vision objective such as object detection, etc. 
+Some examples of feature sets are:
+\begin{itemize}
+	\item Histogram of Oriented Gradients
+	\item Haar Cascades
+	\item Scale Invariant Feature Transform (SIFT)
+	\item Speeded Up Robust Feature (SURF)
+\end{itemize}
+
+A detailed description of machine learning models used in computer vision applications are provided in the next section.
+
+
+\section{Deep Learning}
+\label{sec:fundamentals:deeplearning}
+
+
+The inception of Machine learning had a primary objective of solving the problems faced by systems that rely on hard-coded information in order to function. Hence Machine learning emerged as a subset of Artificial Intelligence(AI), giving systems the ability to acquire their own knowledge by extracting information patterns from data without being explicitly programmed. However the performance of simple machine learning algorithms depends heavily on the representation of data that they are trained on \cite{Goodfellow-et-al-2016}. These representations of the raw data are called features and machine learning algorithms only learn to map such features to an output. 
+For many tasks however, identifying what features are to be extracted is a difficult task by itself. For example, suppose we need a system to identify human faces in images. Here, one would like to use the presence of eyes as features. Unfortunately, it is very difficult to describe what eyes exactly look like in terms of image pixel values. Therefore, identifying and extracting features is a challenging task in most non trivial cases.
+
+Deep Learning solves this central problem in representation learning by introducing representations that are expressed in terms of other, simpler representations \cite{Goodfellow-et-al-2016}. Deep learning technique uses abstract elements called neural networks to learn the representations of data and also models such high level abstractions in data using multiple non-linear transforms. Figure \ref{fig:deep learning model} demonstrates how a deep learning model can represent an image as multiple abstract feature representations like contours and object parts which are in turn represented as edges at a lower abstraction.
+In this manner, deep learning class of algorithms eliminate the need of manual feature engineering by employing techniques which inherently perform hierarchical feature extraction from the given data.
+It is based on cascaded layers of non-linear processing units, where the output of one layer is provided as an input to the next layer. The initial
+layers are responsible for extracting the lower level features from the data. This learned information is then
+fed to the next layer, which attempts to learn the higher-level features to form a hierarchical representation.
+These algorithms can operate in both supervised as well as the unsupervised manner and therefore can be
+used in applications like pattern recognition, classification tasks, etc.
+
+
+\begin{figure}[t]
+	%\vspace*{-2.1 in}
+	\centering
+	\includegraphics[width=\textwidth]{content/imgs/deep_learning_feature}
+	\caption{Illustration of deep learning model \cite{Goodfellow-et-al-2016}}
+	\label{fig:deep learning model}
+\end{figure}
+
+
+
+\begin{figure}[h]
+	%\vspace*{-2.1 in}
+	\centering
+	\includegraphics[width=\textwidth]{content/imgs/neuron}
+	\caption{A single node of a neural network}
+	\label{fig: neuron}
+\end{figure}
+
+The quintessential example of a deep learning model is the Multilayer Perceptron (MLP) \cite{Goodfellow-et-al-2016}. A multilayer perceptron is a mathematical function with certain non-linearity which maps a set of inputs to output values. Each application of such a function can be thought of as providing a new representation of the input data. Deep learning further breaks the complicated task of generating representations into series of nested mappings, each described by a different layer of the model \cite{Goodfellow-et-al-2016}. As shown in Figure \ref{fig:deep learning model}, the input data consisting of observable variables are presented at the `Visible layer'. This is followed by a series of `hidden layers' which form abstract representations from the input. Each layer in the network is comprised of multiple nodes which perform the computations. Each node or neuron performs a linear combination of the set of inputs at its level and a set of weights and passes it through an activation function. The weights signify the relevance of the input component it acts upon. The sum-of-products of the input and weights are then passed through an activation function, which determines the output of the particular node. The activation function has an optional threshold value. If the sum-of-products is greater than the threshold, the node produces an output and is said to be \textit{activated}. Figure \ref{fig: neuron} summarizes the operations in a single node/neuron.
+Mathematically such an operation for the output of the $j$'th node at the $i$'th layer can be describes as:
+\begin{align*}
+	 o_j = \mathlarger \varphi \left( \sum X_i \cdot W_{ij} , \Theta_j \right) 
+\end{align*}
+
+
+Training a neural network essentially seeks to make the neural network learn the data representation behind the given raw input such that a predefined application specific cost function is minimized. This means that neural networks are trained using iterative, gradient-based optimizers that merely drives the cost function to a very low value \cite{Goodfellow-et-al-2016}. Variants of gradient descent and backpropagation are the crucial steps behind such iterative cost reduction technique used in deep learning. The derivative of the cost computed for a given prediction is computed with respect to each of the trainable parameters (weights) and subsequently updated in the direction of the negative gradient in an attempt to reduce the cost value. Using such an iterative optimization approach, neural networks are capable of learning any arbitrary function that maps the input to a suitable output.
+
+In order to formally describe a deep neural network, it is essential to understand the following terms:
+
+\begin{itemize}
+	\item \textbf{Number of layers:} The number of layers in a deep learning model determines the depth of the model. It is a model architecture choice and purely depends on the complexity of the task at hand. A higher number of layers result in a more complex model which might cause problems like over-fitting and vanishing gradients. On the other hand, having very less number of layers results in a very simple model which might not even be able to learn the underlying representations in the data. This phenomenon leads to a problem called under-fitting. 
+	
+	\item \textbf{Cost Function:} The cost function is the criterion for optimization in all deep learning techniques. The cost function for deep neural networks is more or less similar to that of simpler parametric models such as linear models \cite{Goodfellow-et-al-2016}. In most cases the parametric model defines a distribution $p(y|x; \theta)$ where $y$ is the prediction, $x$ is the input and $\theta$ is the model parameter. In such cases the principle of maximum likelihood can be used and the negative likelihood can be used as the cost function. A classic example is the binary cross entropy loss used in binary classification tasks.
+	
+	\item \textbf{Activation function:} Popular activation functions used in deep learning are ReLU, sigmoid and tanh functions. In instances where a real number of any value is desired as an output, linear activation is used. The choice of activation function depends on the task and size of the network. However, sigmoid and tanh activation functions display the vanishing gradient problem for extreme values of their inputs. This factor must be considered while deciding for activation functions.
+	
+	\item \textbf{Optimizer:} Optimizers are algorithms to  iteratively minimize the cost function by altering the model parameters in order to improve the accuracy of the model. Therefore the choice of an optimizer is crucial in order to converge faster and avoid unfavorable local minima.
+	Optimizers are typically gradient based techniques. Popular choices include Adam, Stochastic Gradient Descent(SGD) and RMSProp.
+	
+	\item \textbf{Learning rate:} The learning rate determines the size of the step taken in the direction of the optima in optimization algorithms. The choice of the learning rate determines the speed of convergence and the final optimum reached. A very low learning rate may make the training process very slow and hence takes a long time to converge. At the same time, a higher learning rate may cause the optimizer to overshoot the desired minima. Therefore, a balanced choice is to keep it adaptive, such that a higher learning rate is used in the beginning and subsequently decays over the training process.
+	
+	\item \textbf{Regularization:} Deep learning models are complex models with even millions of parameters in certain cases. This gives the model an enormous amount of flexibility to fit the training data. At times this can lead to overfitting to the training data. Hence regularization is essential to produce better generalization of the model. In L1 and L2 regularization, an additional regularization term is added to the cost function that penalizes large weights. However, Dropout regularization is the most popular technique for deep learning models. In dropout, at every training step each node has a probability $p$ of being turned off. The network learns accordingly, adapting to this change, thus reducing the chances of overfitting.
+	
+	\item \textbf{Epochs:} An epoch signifies one complete pass of the training data during the learning process. If the number of epochs is too large, it may cause the model to overfit to the data and may result in poor generalization on the test data. Whereas, if the number of epochs is too small, the model may not be able to learn the representations completely and may result in under-fitting. 
+\end{itemize}
+
+
+\section{Software Tools}
+\label{sec:fundamentals:sw-tools}
+
+This section briefly describes some of the most necessary software tools and frameworks used in realizing a deep learning based monocular depth estimation system for the thesis. 
+
+\subsection{Python programming language}
+Python is the world's fastest growing and popular programming language not just among software engineers and also among mathematicians, data analysts, scientists and accountants. Surveys like \cite{businessoverbroadway.com} \cite{rowe_2018} done worldwide also indicate that python is the most commonly used programming language for machine learning and data analysis. People from different disciplines use python for variety of different tasks such as data analysis and visualization, machine learning models and other automation.
+
+\textit{Python}, which was originally developed in the late 1980's is an object oriented, high-level general purpose programming language \cite{van2007python}. It provides a wide array of built-in data structures and abstract data types which eases application development. One of the distinguishing factors of python is that it is an interpreted language, meaning it does not have a compilation step. This feature along with modularity and simple syntax makes debugging simpler, thus reducing development time through increased efficiency.
+
+Artificial intelligence and machine learning has penetrated into most applications in today's world. Python has become the go-to language for machine learning and deep learning applications. Python comes with a myriad amount of libraries and frameworks that make coding easy. This also saves a significant amount of time. Python is an open-source programming language and enjoys excellent support from many resources and quality documentation along with a large and active community. Where speed is a concern, it provides alternatives like Cython, which is capable of producing performances similar to the C programming language. Also, being popular for the data analysis related tasks, Python provides very efficient interfaces to all major commercial as well as open-source databases. All these features allow Python to outshine in the field of data science compared to traditional languages like C++ and Java.
+
+
+\subsection{Machine Learning Frameworks: TensorFlow}
+TensorFlow \cite{abadi2016tensorflow} is a computation library developed by Google which has become very popular among the machine learning community. Though it was originally developed for numerical computation, it proves to be useful for deep learning applications too.
+The fundamental data structure used in TensorFlow are multidimensional arrays called tensors. Each computation is represented graphically as a data flow graph \cite{tensorflow_2019} where each node in the graph represents a mathematical operation. 
+
+Some of the key features of tensor-flow are as follows:
+\begin{itemize}
+	\item Though python is the preferred language for developing applications in TensorFlow, most of the underlying implementation is done in C++ and CUDA.
+	
+	\item TensorFlow provides comprehensive GPU support. This is crucial for training deep learning models faster and also facilitates training on distributed clusters.
+	
+	\item In contrast to sequential programming, a static computation graph consisting of nodes and edges is created and the graphs are executed in the form of sessions.
+	
+	\item \textit{tf.data} facilitates building of data pipelines efficiently including data pre-processing.
+	
+	\item Keras integrates tightly with TensorFlow \cite{tensorflow_2019}. This offers a variety of high-level API's which can be used to build complex models on top of low-level TensorFlow functions.   
+	
+\end{itemize}
+ 
+
+
+
+
+\textbf{ todo : Additional buffer for more stuff if needed.}
+
+
+
